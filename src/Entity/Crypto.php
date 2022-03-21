@@ -32,6 +32,11 @@ class Crypto
      */
     private $creation_date;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $algorithm;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Crypto
     public function setCreationDate( $creation_date): self
     {
         $this->creation_date = $creation_date;
+
+        return $this;
+    }
+
+    public function getAlgorithm(): ?string
+    {
+        return $this->algorithm;
+    }
+
+    public function setAlgorithm(string $algorithm): self
+    {
+        $this->algorithm = $algorithm;
 
         return $this;
     }

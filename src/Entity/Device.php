@@ -42,6 +42,11 @@ class Device
      */
     private $hashrate;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $algorithm;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +109,18 @@ class Device
     public function setHashrate(int $hashrate): self
     {
         $this->hashrate = $hashrate;
+
+        return $this;
+    }
+
+    public function getAlgorithm(): ?string
+    {
+        return $this->algorithm;
+    }
+
+    public function setAlgorithm(string $algorithm): self
+    {
+        $this->algorithm = $algorithm;
 
         return $this;
     }

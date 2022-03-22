@@ -17,22 +17,39 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ApiController extends AbstractController{
     private $cryptoRepository;
-    private $em;
+   
     public function  __construct(CryptoRepository $cryptoRepository, EntityManagerInterface $em){
         $this->cryptoRepository = $cryptoRepository;
         $this->em = $em;
-         
+
+    
+        //'data' => $this->cryptoRepository->getAll()
+
     }
     /**
      * @Route("read",name="api.crypto.read")
      */
-    public function readAction(CryptoRepository $cryptoRepository){
-       
-        return new JsonResponse([
-            'data' => $this->cryptoRepository->getAll()
-        ]);
+    public function readAction(){
+       $crypto = $this->getDoctrine()->getRepository(Crypto::class)->findAll();
+       $jsonData = array();
+       $index = 0;
+       foreach ($crypto as $crypt) {
+           $temp = array(
+            'id' => $crypt->getId(),
+               'name' => $crypt->getName(),
+               'price' => $crypt->getPrice(),
+               'creation_date' => $crypt->getCreationDate()->format('Y-m-d'), 
+               'algorithm' => $crypt->getAlgorithm(),
+           );
+           $jsonData[$index++] = $temp;
+       }
+        return new JsonResponse($jsonData);
       
     }
+
+
+    
+
 
       /**
      * @Route("read/{id}", methods={"GET"}, name="api.crypto.readById")
@@ -62,7 +79,7 @@ class ApiController extends AbstractController{
 
         $content = json_decode($request->getContent(),true);
         $crypto = new Crypto();
-        if(isset($content['email'])){
+        if(isset($content['name'])){
             $crypto->setName($content[('name')]);
         }
         if(isset($content['price'])){
@@ -75,7 +92,7 @@ class ApiController extends AbstractController{
             $crypto->setAlgorithm($content['algorithm']);
         }
        
-        $this->em->flush();
+       
         return new JsonResponse([
             'data' => $this->cryptoRepository->add($crypto),
              'content' => $content,
@@ -112,7 +129,7 @@ class ApiController extends AbstractController{
     ]);
    }
      /**
-     * @Route("/api/crypto/delete/{id}",name="api.crypto.delete",methods={"DELETE"})
+     * @Route("delete/{id}",name="api.crypto.delete",methods={"DELETE"})
      */
     public function deleteAction($id, CryptoRepository $cryptoRepository){
         $crypto = $cryptoRepository->find($id);
@@ -120,7 +137,7 @@ class ApiController extends AbstractController{
         $this->em->flush();
 
         return new JsonResponse([
-            'result' => 'ok',
+            'data' => 'ok',
         ]);
     }
 

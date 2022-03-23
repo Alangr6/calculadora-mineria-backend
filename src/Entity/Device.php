@@ -42,10 +42,6 @@ class Device
      */
     private $hashrate;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $algorithm;
 
     public function getId(): ?int
     {
@@ -113,15 +109,4 @@ class Device
         return $this;
     }
 
-    public function getAlgorithm(): ?string
-    {
-        return $this->algorithm;
-    }
-
-    public function setAlgorithm(string $algorithm): self
-    {
-        $this->algorithm = $algorithm;
-
-        return $this;
-    }
 }

@@ -55,14 +55,14 @@ class CryptoRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findByName($name){
+   /*  public function findByName($name){
         $qb =  $this->createQueryBuilder('crypto')
             ->where('crypto.name = :name')
             ->setParameter('name',$name)
             ->orderBy('crypto.name')
         ;
         return $qb->getQuery()->execute();
-    }
+    } */
    
 
     /*

@@ -106,7 +106,7 @@ class DeviceController extends AbstractController{
     }
 
        /**
-     * @Route("update/{id}/",name="api.device.update",methods={"PUT"})
+     * @Route("update/{id}/device",name="api.device.update",methods={"PUT"})
      */
 
    public function updateAction($id, DeviceRepository $deviceRepository,Request $request){

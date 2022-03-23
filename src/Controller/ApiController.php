@@ -108,7 +108,7 @@ class ApiController extends AbstractController{
     }
 
        /**
-     * @Route("update/{id}",name="api.crypto.update",methods={"PUT"})
+     * @Route("update/{id}/crypto",name="api.crypto.update",methods={"PUT"})
      */
 
    public function updateAction($id, CryptoRepository $cryptoRepository,Request $request){

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CryptoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,18 @@ class Crypto
      * @ORM\Column(type="string", length=255)
      */
     private $algorithm;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CryptoDevice::class, mappedBy="crypto")
+     */
+    private $cryptoDevices;
+
+    public function __construct()
+    {
+        $this->cryptoDevices = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -89,4 +103,36 @@ class Crypto
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, CryptoDevice>
+     */
+    public function getCryptoDevices(): Collection
+    {
+        return $this->cryptoDevices;
+    }
+
+    public function addCryptoDevice(CryptoDevice $cryptoDevice): self
+    {
+        if (!$this->cryptoDevices->contains($cryptoDevice)) {
+            $this->cryptoDevices[] = $cryptoDevice;
+            $cryptoDevice->setCrypto($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCryptoDevice(CryptoDevice $cryptoDevice): self
+    {
+        if ($this->cryptoDevices->removeElement($cryptoDevice)) {
+            // set the owning side to null (unless already changed)
+            if ($cryptoDevice->getCrypto() === $this) {
+                $cryptoDevice->setCrypto(null);
+            }
+        }
+
+        return $this;
+    }
+
+ 
 }

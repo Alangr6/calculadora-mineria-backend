@@ -45,7 +45,14 @@ class DeviceRepository extends ServiceEntityRepository
         }
     }
     
-
+    public function getAll()
+    {
+        return $this->createQueryBuilder('c')
+            ->getQuery()
+            ->getArrayResult()
+            
+        ;
+    }
     // /**
     //  * @return Device[] Returns an array of Device objects
     //  */

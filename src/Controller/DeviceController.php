@@ -30,21 +30,13 @@ class DeviceController extends AbstractController{
      * @Route("read",name="api.device.read")
      */
     public function readAction(){
-       $devices = $this->getDoctrine()->getRepository(Device::class)->findAll();
-       $jsonData = array();
-       $index = 0;
-       foreach ($devices as $device) {
-           $temp = array(
-            'id' => $device->getId(),
-               'type' => $device->getType(),
-               'name' => $device->getName(),
-               'price' => $device->getPrice(), 
-                'comsumption' => $device->getComsumption(),
-                'hashrate' => $device->getHashrate()
-           );
-           $jsonData[$index++] = $temp;
-       }
-        return new JsonResponse($jsonData);
+        
+   
+            return new JsonResponse([
+                'data' => $this->deviceRepository->getAll() 
+            ]);
+          
+        
       
     }
 

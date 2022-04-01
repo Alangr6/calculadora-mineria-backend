@@ -30,20 +30,10 @@ class ApiController extends AbstractController{
      * @Route("read",name="api.crypto.read")
      */
     public function readAction(){
-       $crypto = $this->getDoctrine()->getRepository(Crypto::class)->findAll();
-       $jsonData = array();
-       $index = 0;
-       foreach ($crypto as $crypt) {
-           $temp = array(
-            'id' => $crypt->getId(),
-               'name' => $crypt->getName(),
-               'price' => $crypt->getPrice(),
-               'creation_date' => $crypt->getCreationDate()->format('Y-m-d'), 
-               'algorithm' => $crypt->getAlgorithm(),
-           );
-           $jsonData[$index++] = $temp;
-       }
-        return new JsonResponse($jsonData);
+   
+        return new JsonResponse([
+            'data' => $this->cryptoRepository->getAll() 
+        ]);
       
     }
 

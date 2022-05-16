@@ -49,6 +49,7 @@ class CryptoDeviceRepository extends ServiceEntityRepository
         ->select('cd,d,c')
             ->innerJoin('cd.device', 'd' )
             ->innerJoin('cd.crypto', 'c' )
+            ->orderBy('d.price', 'DESC')
             ->getQuery()
             ->getArrayResult()
         ;

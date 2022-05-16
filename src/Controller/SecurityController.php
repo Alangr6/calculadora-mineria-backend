@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 
 /**
-     * @Route("/login/", name="app_login")
+     * @Route("/api/loginn/", name="app_login")
      */
 class SecurityController extends AbstractController
 {
@@ -85,6 +85,7 @@ class SecurityController extends AbstractController
         if(isset($content['password'])){
             $user->setPassword($content['password']);
         }
+        
        
         return new JsonResponse([
             'data' => $this->userRepository->add($user),

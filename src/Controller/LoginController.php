@@ -20,7 +20,7 @@ class LoginController extends AbstractController
          // last username entered by the user
          $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('http://localhost:3000/login', [
+        return $this->render($_ENV['APP_URL'] . 'login', [
             'last_username' => $lastUsername,
             'error' => $error,
         ]);

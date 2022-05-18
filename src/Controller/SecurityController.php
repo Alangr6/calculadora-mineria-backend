@@ -92,7 +92,13 @@ class SecurityController extends AbstractController
         ]);
         $passwordHasher = new UserPasswordHasher($passwordHasherFactory);
         $content = json_decode($request->getContent(),true);
+        $plaintextPassword = $content['password'];
         $user = new User();
+        $hashedPassword = $passwordHasher->hashPassword(
+            $user,
+            $plaintextPassword
+        );
+        
         if(isset($content['name'])){
             $user->setName($content[('name')]);
         }
@@ -104,11 +110,6 @@ class SecurityController extends AbstractController
         }
         if(isset($content['password'])){
             // ...
-            $plaintextPassword = $content['password'];
-            $hashedPassword = $passwordHasher->hashPassword(
-                $user,
-                $plaintextPassword
-            );
             $user->setPassword($hashedPassword);
         }
         

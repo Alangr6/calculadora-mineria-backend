@@ -15,21 +15,25 @@ security:
                 property: email
 
     firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
         login:
             pattern: ^/api/login
             stateless: true
             json_login:
                 check_path: /api/login_check # api_login_check
+                password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         api:
-            pattern:   ^/api
+            pattern: ^/api
             stateless: true
-            jwt: ~
-            # guard:
-            #     authenticators:
-            #         - lexik_jwt_authentication.jwt_token_authenticator
+       #     jwt: ~
+             guard:
+                 authenticators:
+                     - lexik_jwt_authentication.jwt_token_authenticator
 
         main:
             lazy: true
@@ -46,9 +50,13 @@ security:
 
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/api/crypto/device/read, roles: PUBLIC_ACCESS }
+        - { path: ^/api/crypto/read, roles: PUBLIC_ACCESS }
+        - { path: ^/api/device/read, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
+        - { path: ^/b,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_USER }
 
 # when@test:
 #     security:

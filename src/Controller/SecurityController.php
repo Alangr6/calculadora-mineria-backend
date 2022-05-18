@@ -14,9 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+
 
 /**
-     * @Route("/api/loginn/", name="app_login")
+     * @Route("/api/login/", name="app_login")
      */
 class SecurityController extends AbstractController
 {
@@ -31,7 +36,7 @@ class SecurityController extends AbstractController
 
     }
     /**
-     * @Route("/login2/", name="app_login")
+     * @Route("login2", name="app_login",methods={"POST"})
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -69,8 +74,23 @@ class SecurityController extends AbstractController
      * @Route("create",name="api.device.create",methods={"POST"})
      */
     public function createAction(Request $request){
-      
-
+        $passwordHasherFactory = new PasswordHasherFactory([
+            'legacy' => [
+                'algorithm' => 'sha256',
+                'encode_as_base64' => true,
+                'iterations' => 1,
+            ],
+        
+            User::class => [
+                // the new hasher, along with its options
+                'algorithm' => 'sodium',
+                'migrate_from' => [
+                    'bcrypt', // uses the "bcrypt" hasher with the default options
+                    'legacy', // uses the "legacy" hasher configured above
+                ],
+            ],
+        ]);
+        $passwordHasher = new UserPasswordHasher($passwordHasherFactory);
         $content = json_decode($request->getContent(),true);
         $user = new User();
         if(isset($content['name'])){
@@ -83,7 +103,13 @@ class SecurityController extends AbstractController
             $user->setEmail($content[('email')]);
         }
         if(isset($content['password'])){
-            $user->setPassword($content['password']);
+            // ...
+            $plaintextPassword = $content['password'];
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plaintextPassword
+            );
+            $user->setPassword($hashedPassword);
         }
         
        

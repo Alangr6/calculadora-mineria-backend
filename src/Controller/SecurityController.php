@@ -109,9 +109,9 @@ class SecurityController extends AbstractController
             $user->setEmail($content[('email')]);
         }
         if(isset($content['password'])){
-            // ...
             $user->setPassword($hashedPassword);
         }
+        $user->setRoles(['ROLE_USER']);
         
        
         return new JsonResponse([

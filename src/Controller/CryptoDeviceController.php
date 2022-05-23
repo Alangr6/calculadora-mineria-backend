@@ -43,19 +43,20 @@ class CryptoDeviceController extends AbstractController
       /**
      * @Route("create",name="api.crypto.device.create",methods={"POST"})
      */
-    public function createAction(Request $request){
-        $crypto = $this->getDoctrine()->getRepository(Crypto::class);
-        $devices = $this->getDoctrine()->getRepository(Device::class);
+     public function createAction(Request $request){
+        $cryptoRepository = $this->getDoctrine()->getRepository(Crypto::class);
+        $deviceRepository = $this->getDoctrine()->getRepository(Device::class);
 
          $content = json_decode($request->getContent(), true);
+         dd($content);
          $cryptoDevice = new CryptoDevice();
          if (isset($crypto)) {
-             $crypto->addCryptoDevice($crypto);
+             $cryptoAlert->setCrypto($cryptoAlert);
          }
          if (isset($device)) {
-             $devices->addCryptoDevice($device);
+             $deviceAlert->setDevice($deviceAlert);
          }
-         if (isset($content['price'])) {
+         if (isset($content['benefits'])) {
              $cryptoDevice->setBenefits($content[('benefits')]);
          }
          return new JsonResponse([
@@ -63,4 +64,19 @@ class CryptoDeviceController extends AbstractController
              'content' => $content,
         ]);
      }
+
+
+
+      /**
+     * @Route("delete/{id}",name="api.crypto.delete",methods={"DELETE"})
+     */
+    public function deleteAction($id, CryptoDeviceRepository $cryptoDeviceRepository){
+        $cryptoDevice = $cryptoDeviceRepository->find($id);
+        $this->em->remove($cryptoDevice);
+        $this->em->flush();
+
+        return new JsonResponse([
+            'data' => 'ok',
+        ]);
+    }
 }

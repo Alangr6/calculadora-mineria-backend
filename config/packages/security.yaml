@@ -52,7 +52,7 @@ security:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/crypto/device/read, roles: PUBLIC_ACCESS }
         - { path: ^/api/crypto/device/create, roles: PUBLIC_ACCESS }
-        - { path: ^/api/crypto/read, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/crypto/read, roles: PUBLIC_ACCESS }
         - { path: ^/api/device/read, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

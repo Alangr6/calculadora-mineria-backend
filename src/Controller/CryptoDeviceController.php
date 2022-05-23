@@ -43,17 +43,17 @@ class CryptoDeviceController extends AbstractController
       /**
      * @Route("create",name="api.crypto.device.create",methods={"POST"})
      */
-     public function createAction(Request $request){
+    public function createAction(Request $request){
         $crypto = $this->getDoctrine()->getRepository(Crypto::class);
         $devices = $this->getDoctrine()->getRepository(Device::class);
 
          $content = json_decode($request->getContent(), true);
          $cryptoDevice = new CryptoDevice();
          if (isset($crypto)) {
-             $cryptoAlert->setCrypto($crypt);
+             $crypto->addCryptoDevice($crypto);
          }
          if (isset($device)) {
-             $deviceAlert->setDevice($device);
+             $devices->addCryptoDevice($device);
          }
          if (isset($content['price'])) {
              $cryptoDevice->setBenefits($content[('benefits')]);

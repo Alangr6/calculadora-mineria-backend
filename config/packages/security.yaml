@@ -31,7 +31,7 @@ security:
             pattern: ^/api
             stateless: true
        #     jwt: ~
-             guard:
+            guard:
                  authenticators:
                      - lexik_jwt_authentication.jwt_token_authenticator
 
@@ -51,8 +51,9 @@ security:
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/crypto/device/read, roles: PUBLIC_ACCESS }
-        - { path: ^/api/crypto/read, roles: PUBLIC_ACCESS }
-        - { path: ^/api/device/read, roles: PUBLIC_ACCESS }
+        - { path: ^/api/crypto/device/create, roles: PUBLIC_ACCESS }
+        - { path: ^/api/crypto/read, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/device/read, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/admin, roles: ROLE_ADMIN }

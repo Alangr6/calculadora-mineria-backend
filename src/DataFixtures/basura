@@ -187,3 +187,24 @@ security:
             'data' => $this->userRepository->add($user),
              'content' => $content,
         ]);
+        /////////////////////////////////////////////////////////
+         public function createAction(Request $request){
+        $crypto = $this->getDoctrine()->getRepository(Crypto::class);
+        $devices = $this->getDoctrine()->getRepository(Device::class);
+
+         $content = json_decode($request->getContent(), true);
+         $cryptoDevice = new CryptoDevice();
+         if (isset($crypto)) {
+             $crypto->getId($crypto);
+         }
+         if (isset($device)) {
+             $device->getId($device);
+         }
+         if (isset($content['price'])) {
+             $cryptoDevice->setBenefits($content[('benefits')]);
+         }
+         return new JsonResponse([
+            'data' => $this->cryptoDeviceRepository->add($cryptoDevice),
+             'content' => $content,
+        ]);
+     }

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\CryptoRepository;
+use App\Repository\DeviceRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,56 +18,56 @@ use Symfony\Component\HttpFoundation\Request;
 
 
  /**
-     * @Route("/api/crypto/device/", name="app_crypto_device")
-     */
+  * @Route("/api/crypto/device/", name="app_crypto_device")
+ */
 class CryptoDeviceController extends AbstractController
 {
-    private $cryptoDeviceRepository;
-   
-    public function  __construct(CryptoDeviceRepository $cryptoDeviceRepository, EntityManagerInterface $em){
+
+    private CryptoRepository $cryptoRepository;
+    private DeviceRepository $deviceRepository;
+    private CryptoDeviceRepository $cryptoDeviceRepository;
+
+    public function __construct(CryptoRepository $cryptoRepository,DeviceRepository $deviceRepository,CryptoDeviceRepository $cryptoDeviceRepository,EntityManagerInterface $em)
+    {
+        $this->cryptoRepository = $cryptoRepository;
+        $this->deviceRepository = $deviceRepository;
         $this->cryptoDeviceRepository = $cryptoDeviceRepository;
         $this->em = $em;
+
     }
+
      /**
      * @Route("read",name="api.crypto.device.read")
      */
-    public function readAction(/* ManagerRegistry $doctrine, int $id */){
-        /* $name = $doctrine->getRepository(Crypto::class)->find($id);
-        $crypto = $name->getCrypto(); */
+    public function readAction(){
 
          return new JsonResponse([
              'data' => $this->cryptoDeviceRepository->getAll(),
-                
-
          ]);
        
      }
       /**
      * @Route("create",name="api.crypto.device.create",methods={"POST"})
      */
-     public function createAction(Request $request){
-        $cryptoRepository = $this->getDoctrine()->getRepository(Crypto::class);
-        $deviceRepository = $this->getDoctrine()->getRepository(Device::class);
+     public function createAction(Request $request ){
 
          $content = json_decode($request->getContent(), true);
-         dd($content);
+
+         $crypto = $this->cryptoRepository->find($content['crypto_id']);
+         $device = $this->deviceRepository->find($content['device_id']);
+
+
          $cryptoDevice = new CryptoDevice();
-         if (isset($crypto)) {
-             $cryptoAlert->setCrypto($cryptoAlert);
-         }
-         if (isset($device)) {
-             $deviceAlert->setDevice($deviceAlert);
-         }
-         if (isset($content['benefits'])) {
-             $cryptoDevice->setBenefits($content[('benefits')]);
-         }
+         $cryptoDevice->setBenefits($content['benefits']);
+         $cryptoDevice->setCrypto($crypto);
+         $cryptoDevice->setDevice($device);
+
+         $this->cryptoDeviceRepository->add($cryptoDevice,true);
+
          return new JsonResponse([
-            'data' => $this->cryptoDeviceRepository->add($cryptoDevice),
-             'content' => $content,
+            'message' => "crypto device stored successful"
         ]);
      }
-
-
 
       /**
      * @Route("delete/{id}",name="api.crypto.delete",methods={"DELETE"})

@@ -61,11 +61,7 @@ class ApiController extends AbstractController{
      * @Route("create",name="api.crypto.create",methods={"POST"})
      */
     public function createAction(Request $request){
-        /* $content = $request->getContent();
-        $crypto = new Crypto();
-        $crypto->setName($request->get('name'));
-        $crypto->setPrice($request->get('price'));
-        $crypto->setCreationDate(new \DateTime()); */
+
 
         $content = json_decode($request->getContent(),true);
         $crypto = new Crypto();

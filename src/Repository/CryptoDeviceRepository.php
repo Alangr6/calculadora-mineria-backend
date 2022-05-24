@@ -56,13 +56,25 @@ class CryptoDeviceRepository extends ServiceEntityRepository
     }
 
    
-    public function getAllByCrypto(){
+    public function getAllByCrypto($id){
         return $this->createQueryBuilder('cd')
         ->select('cd,d,c')
             ->innerJoin('cd.device', 'd' )
             ->innerJoin('cd.crypto', 'c' )
             ->andWhere('c.id = :cryptoid')
-            ->setParameter('cryptoid' , 1)
+            ->setParameter('cryptoid' , $id)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
+    public function getAllByPrice($price){
+        return $this->createQueryBuilder('cd')
+        ->select('cd,d,c')
+            ->innerJoin('cd.device', 'd' )
+            ->innerJoin('cd.crypto', 'c' )
+            ->andWhere('d.price = :deviceprice')
+            ->setParameter('deviceprice' , $price)
             ->getQuery()
             ->getArrayResult()
         ;

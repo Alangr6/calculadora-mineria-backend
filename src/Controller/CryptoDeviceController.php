@@ -47,16 +47,7 @@ class CryptoDeviceController extends AbstractController
        
      }
 
-      /**
-     * @Route("read",name="api.crypto.device.read")
-     */
-    public function readActionByPrice(){
-
-        return new JsonResponse([
-            'data' => $this->cryptoDeviceRepository->getAll(),
-        ]);
-      
-    }
+   
       /**
      * @Route("create",name="api.crypto.device.create",methods={"POST"})
      */

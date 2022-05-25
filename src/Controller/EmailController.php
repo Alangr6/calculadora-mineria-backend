@@ -17,6 +17,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class EmailController extends AbstractController{
     private $emailRepository;
+    private $em;
+
    
     public function  __construct(EmailRepository $emailRepository, EntityManagerInterface $em){
         $this->emailRepository = $emailRepository;
@@ -38,19 +40,17 @@ class EmailController extends AbstractController{
     /**
      * @Route("create",name="email.create",methods={"POST"})
      */
-    public function createAction(Request $request){
+    public function createAction(Request $request, EntityManagerInterface $em){
        
 
         $content = json_decode($request->getContent(),true);
         $email = new Email();
-        if(isset($content['email'])){
-            $email->setEmail($content[('email')]);
-        }
+        $email->setEmail($content['email']);
       
-       
+       $em->persist($email);
+       $em->flush();
        
         return new JsonResponse([
-            'data' => $this->emailRepository->add($email),
              'content' => $content,
         ]);
         
